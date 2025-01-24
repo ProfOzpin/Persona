@@ -1,6 +1,7 @@
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 
-export default function NewScreen() {
+
+export default function HomeScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -17,8 +18,10 @@ export default function NewScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Main Content - Add your content here */}
-      <View style={styles.content}></View>
+      {/* Main Content */}
+      <View style={styles.content}>
+        {/* Your existing content here */}
+      </View>
 
       {/* Bottom Navigation Bar */}
       <View style={styles.bottomBar}>
@@ -35,6 +38,17 @@ export default function NewScreen() {
           />
         </TouchableOpacity>
       </View>
+
+      {/* New Floating Action Button */}
+      <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => console.log('New Message pressed')}
+      >
+        <Image
+          source={require('@/assets/icons/new-message-icon.png')} // Add your icon
+          style={styles.fabIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -76,6 +90,27 @@ const styles = StyleSheet.create({
   navIcon: {
     width: 32,
     height: 32,
+    resizeMode: 'contain',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 70, // Adjust based on your bottom bar height
+    right: 20,
+    backgroundColor: 'white',
+    borderRadius: 30,
+    width: 56,
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  fabIcon: {
+    width: 30,
+    height: 30,
     resizeMode: 'contain',
   },
 });
