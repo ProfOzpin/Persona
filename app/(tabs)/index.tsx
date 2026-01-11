@@ -1,23 +1,46 @@
-import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StyleSheet, View, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
-
-// Define your navigation types
-type RootStackParamList = {
-  Welcome: undefined;
-  Home: undefined; // Changed from 'Main' to 'Home' to match your usage
-};
-
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+import { useEffect, useState } from 'react';
+import { initializeDatabase } from '@/lib/database';
+import { initializeSchema } from '@/lib/schema';
 
 export default function HomeScreen() {
-  const navigation = useNavigation<NavigationProp>();
+  const [isReady, setIsReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function initApp() {
+      try {
+        const db = await initializeDatabase();
+        await initializeSchema(db);
+        setIsReady(true);
+      } catch (err) {
+        console.error('App initialization failed:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      }
+    }
+
+    initApp();
+  }, []);
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ color: 'red', textAlign: 'center', padding: 20 }}>
+          Failed to initialize app: {error}
+        </Text>
+      </View>
+    );
+  }
+
+  if (!isReady) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#ffffff" />
+        <Text style={{ color: 'white', marginTop: 20 }}>Initializing...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -54,12 +77,12 @@ const styles = StyleSheet.create({
     width: 250,
     height: 100,
     resizeMode: 'contain',
-    marginBottom: 0, // Reduced from 30 to 20
+    marginBottom: 0,
   },
   subtitle: {
     fontSize: 18,
     color: 'white',
-    marginBottom: 80, // Reduced from 40 to 20
+    marginBottom: 80,
   },
   textContainer: {
     alignItems: 'center',

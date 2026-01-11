@@ -35,4 +35,14 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# Add these if not present
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.expo/
+android/
+ios/
+
+
 app-example
