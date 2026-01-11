@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
   try {
@@ -28,8 +28,12 @@ export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
         title TEXT,
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL,
-        last_message_at INTEGER
+        last_message_at INTEGER,
+        flow_mode TEXT DEFAULT 'full_control' CHECK(flow_mode IN ('full_control', 'random')),
+        persona_sequence TEXT,
+        current_persona_index INTEGER DEFAULT 0
       );
+
 
       -- Messages: Individual messages in conversations
       CREATE TABLE IF NOT EXISTS messages (
@@ -73,9 +77,19 @@ export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
       await db.runAsync('INSERT INTO schema_info (version) VALUES (?)', SCHEMA_VERSION);
       console.log(`✓ Database schema initialized (v${SCHEMA_VERSION})`);
     } else if (result.version < SCHEMA_VERSION) {
+      // Migration for existing databases
+      if (result.version < 2) {
+        await db.execAsync(`
+          ALTER TABLE conversations ADD COLUMN flow_mode TEXT DEFAULT 'full_control' CHECK(flow_mode IN ('full_control', 'random'));
+          ALTER TABLE conversations ADD COLUMN persona_sequence TEXT;
+          ALTER TABLE conversations ADD COLUMN current_persona_index INTEGER DEFAULT 0;
+        `);
+        console.log('✓ Migrated database to v2');
+      }
       await db.runAsync('UPDATE schema_info SET version = ?', SCHEMA_VERSION);
       console.log(`✓ Database schema updated to v${SCHEMA_VERSION}`);
     }
+
 
     // Ensure "You" persona exists
     await ensureYouPersonaExists(db);

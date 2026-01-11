@@ -133,7 +133,7 @@ export default function NewConversationScreen() {
       console.log(`✓ Linked ${selectedIds.length} personas to conversation`);
 
       // Navigate back to home
-      router.push('/(tabs)/home');
+      router.push(`/conversation-setup/${conversationId}`);
       
     } catch (error) {
       console.error('Failed to create conversation:', error);

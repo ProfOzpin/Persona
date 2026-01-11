@@ -18,6 +18,7 @@
       "bundleIdentifier": "com.ozpin.Persona"
     },
     "android": {
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
