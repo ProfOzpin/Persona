@@ -1,8 +1,8 @@
 import { StyleSheet, View, Image, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { initializeDatabase } from '@/lib/database';
-import { initializeSchema } from '@/lib/schema';
+import { getDatabase } from '@/lib/database';
+import { initializeEncryptionKey } from '@/lib/security';
 
 export default function HomeScreen() {
   const [isReady, setIsReady] = useState(false);
@@ -11,8 +11,12 @@ export default function HomeScreen() {
   useEffect(() => {
     async function initApp() {
       try {
-        const db = await initializeDatabase();
-        await initializeSchema(db);
+        // Initialize encryption key first
+        await initializeEncryptionKey();
+        
+        // Then open database
+        getDatabase();
+        
         setIsReady(true);
       } catch (err) {
         console.error('App initialization failed:', err);
@@ -26,9 +30,7 @@ export default function HomeScreen() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Text style={{ color: 'red', textAlign: 'center', padding: 20 }}>
-          Failed to initialize app: {error}
-        </Text>
+        <Text style={styles.subtitle}>Failed to initialize app: {error}</Text>
       </View>
     );
   }
@@ -36,8 +38,8 @@ export default function HomeScreen() {
   if (!isReady) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#ffffff" />
-        <Text style={{ color: 'white', marginTop: 20 }}>Initializing...</Text>
+        <ActivityIndicator size="large" color="white" />
+        <Text style={styles.subtitle}>Initializing...</Text>
       </View>
     );
   }

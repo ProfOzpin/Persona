@@ -4,10 +4,10 @@ import * as Crypto from 'expo-crypto';
 const ENCRYPTION_KEY_STORAGE_KEY = 'persona_db_encryption_key';
 
 /**
- * Generates or retrieves the database encryption key.
- * This key is unique per device installation and never leaves secure storage.
+ * Generates or retrieves the database encryption key (async).
+ * Call this on app initialization before opening database.
  */
-export async function getDatabaseEncryptionKey(): Promise<string> {
+export async function initializeEncryptionKey(): Promise<string> {
   try {
     // Try to retrieve existing key
     let key = await SecureStore.getItemAsync(ENCRYPTION_KEY_STORAGE_KEY);
@@ -30,9 +30,24 @@ export async function getDatabaseEncryptionKey(): Promise<string> {
 }
 
 /**
+ * Synchronously retrieves the encryption key.
+ * MUST call initializeEncryptionKey() first during app startup.
+ */
+export function getEncryptionKey(): string {
+  try {
+    const key = SecureStore.getItem(ENCRYPTION_KEY_STORAGE_KEY);
+    if (!key) {
+      throw new Error('Encryption key not initialized. Call initializeEncryptionKey() first.');
+    }
+    return key;
+  } catch (error) {
+    throw new Error('Failed to get encryption key: ' + error);
+  }
+}
+
+/**
  * WARNING: This permanently deletes the encryption key.
  * All encrypted data becomes unrecoverable.
- * Only use for app reset or data deletion features.
  */
 export async function deleteEncryptionKey(): Promise<void> {
   await SecureStore.deleteItemAsync(ENCRYPTION_KEY_STORAGE_KEY);

@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "packs": [
+    {
+      "id": "pack_philosophical",
+      "name": "Philosophical Perspectives",
+      "description": "Classical philosophical approaches to thinking and living",
+      "category": "philosophy",
+      "personas": [
+        {
+          "id": "persona_pragmatist",
+          "name": "The Pragmatist",
+          "perspective": "I focus on what actually works. Let's find solutions that fit reality.",
+          "color": "#2196F3"
+        },
+        {
+          "id": "persona_nihilist",
+          "name": "The Nihilist",
+          "perspective": "In the cosmic scale, none of this matters. There's freedom in that.",
+          "color": "#757575"
+        },
+        {
+          "id": "persona_optimist",
+          "name": "The Optimist",
+          "perspective": "I see the potential and possibility in every situation.",
+          "color": "#FFC107"
+        },
+        {
+          "id": "persona_cynic",
+          "name": "The Cynic",
+          "perspective": "I question motives and look for what's being hidden or unsaid.",
+          "color": "#795548"
+        },
+        {
+          "id": "persona_stoic",
+          "name": "The Stoic",
+          "perspective": "I accept what I cannot control and act on what I can.",
+          "color": "#607D8B"
+        },
+        {
+          "id": "persona_existentialist",
+          "name": "The Existentialist",
+          "perspective": "I create meaning through my choices and authentic existence.",
+          "color": "#9C27B0"
+        }
+      ]
+    },
+    {
+      "id": "pack_emotional",
+      "name": "Emotional Processing",
+      "description": "Navigate and understand your emotional landscape",
+      "category": "emotional",
+      "personas": [
+        {
+          "id": "persona_empath",
+          "name": "The Empath",
+          "perspective": "I honor all feelings and hold space for emotional truth.",
+          "color": "#E91E63"
+        },
+        {
+          "id": "persona_rational",
+          "name": "The Rational Mind",
+          "perspective": "I observe without emotion and analyze the facts clearly.",
+          "color": "#00BCD4"
+        },
+        {
+          "id": "persona_inner_child",
+          "name": "The Inner Child",
+          "perspective": "I remember what it felt like and what I needed back then.",
+          "color": "#FF9800"
+        },
+        {
+          "id": "persona_compassionate",
+          "name": "The Compassionate Self",
+          "perspective": "I treat you with the kindness I'd show my closest friend.",
+          "color": "#4CAF50"
+        },
+        {
+          "id": "persona_protector",
+          "name": "The Protector",
+          "perspective": "I guard your boundaries and keep you safe from harm.",
+          "color": "#F44336"
+        },
+        {
+          "id": "persona_observer",
+          "name": "The Observer",
+          "perspective": "I witness everything without judgment or interference.",
+          "color": "#9E9E9E"
+        }
+      ]
+    },
+    {
+      "id": "pack_problem_solving",
+      "name": "Problem-Solving Modes",
+      "description": "Different approaches to analyzing and solving challenges",
+      "category": "problem_solving",
+      "personas": [
+        {
+          "id": "persona_analyst",
+          "name": "The Analyst",
+          "perspective": "I break complex problems into manageable, logical steps.",
+          "color": "#3F51B5"
+        },
+        {
+          "id": "persona_creative",
+          "name": "The Creative",
+          "perspective": "I see connections others miss and imagine new possibilities.",
+          "color": "#FF6F00"
+        },
+        {
+          "id": "persona_strategist",
+          "name": "The Strategist",
+          "perspective": "I plan three moves ahead and consider long-term consequences.",
+          "color": "#1976D2"
+        },
+        {
+          "id": "persona_scientist",
+          "name": "The Scientist",
+          "perspective": "I test hypotheses and follow the evidence wherever it leads.",
+          "color": "#00897B"
+        },
+        {
+          "id": "persona_improviser",
+          "name": "The Improviser",
+          "perspective": "I adapt instantly and make the most of what's available now.",
+          "color": "#FDD835"
+        },
+        {
+          "id": "persona_devils_advocate",
+          "name": "The Devil's Advocate",
+          "perspective": "I challenge every assumption to expose weaknesses in thinking.",
+          "color": "#D32F2F"
+        }
+      ]
+    },
+    {
+      "id": "pack_life_orientations",
+      "name": "Life Orientations",
+      "description": "Different ways of approaching and experiencing life",
+      "category": "life_orientation",
+      "personas": [
+        {
+          "id": "persona_survivalist",
+          "name": "The Survivalist",
+          "perspective": "I focus on immediate needs and what keeps us thriving.",
+          "color": "#FF5722"
+        },
+        {
+          "id": "persona_hedonist",
+          "name": "The Hedonist",
+          "perspective": "I pursue pleasure and joy because life is meant to be enjoyed.",
+          "color": "#E91E63"
+        },
+        {
+          "id": "persona_minimalist",
+          "name": "The Minimalist",
+          "perspective": "I find freedom in simplicity and letting go of excess.",
+          "color": "#BDBDBD"
+        },
+        {
+          "id": "persona_adventurer",
+          "name": "The Adventurer",
+          "perspective": "I embrace the unknown and see every moment as possibility.",
+          "color": "#00BCD4"
+        },
+        {
+          "id": "persona_nurturer",
+          "name": "The Nurturer",
+          "perspective": "I tend to what needs care and help things grow gently.",
+          "color": "#66BB6A"
+        },
+        {
+          "id": "persona_warrior",
+          "name": "The Warrior",
+          "perspective": "I fight for what matters and draw on inner strength.",
+          "color": "#D32F2F"
+        }
+      ]
+    }
+  ]
+}

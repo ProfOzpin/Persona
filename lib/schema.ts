@@ -1,14 +1,7 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 
-/**
- * Database schema version for migrations
- */
 const SCHEMA_VERSION = 1;
 
-/**
- * Initializes all database tables.
- * This is idempotent - safe to call multiple times.
- */
 export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
   try {
     await db.execAsync(`
@@ -17,7 +10,7 @@ export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
         version INTEGER PRIMARY KEY
       );
 
-      -- Personas: The different perspectives/personalities
+      -- Personas: Both built-in (is_custom=0) and custom (is_custom=1)
       CREATE TABLE IF NOT EXISTS personas (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -42,18 +35,18 @@ export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
       CREATE TABLE IF NOT EXISTS messages (
         id TEXT PRIMARY KEY,
         conversation_id TEXT NOT NULL,
-        persona_id TEXT,
+        persona_id TEXT NOT NULL,
         content TEXT NOT NULL,
-        is_user INTEGER NOT NULL DEFAULT 1,
         created_at INTEGER NOT NULL,
         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
-        FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE SET NULL
+        FOREIGN KEY (persona_id) REFERENCES personas(id) ON DELETE CASCADE
       );
 
       -- ConversationPersonas: Which personas are available in each conversation
       CREATE TABLE IF NOT EXISTS conversation_personas (
         conversation_id TEXT NOT NULL,
         persona_id TEXT NOT NULL,
+        side TEXT CHECK(side IN ('left', 'right')),
         added_at INTEGER NOT NULL,
         PRIMARY KEY (conversation_id, persona_id),
         FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
@@ -80,13 +73,41 @@ export async function initializeSchema(db: SQLiteDatabase): Promise<void> {
       await db.runAsync('INSERT INTO schema_info (version) VALUES (?)', SCHEMA_VERSION);
       console.log(`✓ Database schema initialized (v${SCHEMA_VERSION})`);
     } else if (result.version < SCHEMA_VERSION) {
-      // Future: Add migration logic here
       await db.runAsync('UPDATE schema_info SET version = ?', SCHEMA_VERSION);
       console.log(`✓ Database schema updated to v${SCHEMA_VERSION}`);
     }
 
+    // Ensure "You" persona exists
+    await ensureYouPersonaExists(db);
+
   } catch (error) {
     console.error('Failed to initialize schema:', error);
     throw error;
+  }
+}
+
+/**
+ * Ensures the special "You" persona exists in the database
+ */
+async function ensureYouPersonaExists(db: SQLiteDatabase): Promise<void> {
+  const existing = await db.getFirstAsync(
+    'SELECT id FROM personas WHERE id = ?',
+    'user'
+  );
+
+  if (!existing) {
+    const now = Date.now();
+    await db.runAsync(
+      `INSERT INTO personas (id, name, description, color, is_custom, pack_name, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 0, ?, ?, ?)`,
+      'user',
+      'You',
+      'Your own voice and perspective',
+      '#FFFFFF',
+      null,
+      now,
+      now
+    );
+    console.log('✓ Created "You" persona');
   }
 }
